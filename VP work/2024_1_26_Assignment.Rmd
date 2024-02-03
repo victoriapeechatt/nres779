@@ -1,0 +1,45 @@
+---
+title: 'Assignment #1'
+author: "Victoria Peechatt"
+date: "2024-01-26"
+header-includes:
+  - \usepackage{amsmath}
+output:
+  html_document:
+    df_print: paged
+  pdf_document: 
+    latex_engine: xelatex
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Nicholson–Bailey model:
+
+This model is spin off of the Lotka-Volterra model which describes competitive and mutualistic interactions between two populations. The Nicholson-Bailey model is specific to host-parasitoid interactions. My study system includes the specialist herbivore (*Euphydryas phaeton*) and its specialist parasitoid (*Cotesia euphydryas*), and I hope to use this model to understand their dynamics with variable stressors. I also possibly want to expand it to include interactions between other trophic levels. (the host plant below the herbivore and the hyper-parasitoid above the parasitoid)
+
+```{=tex}
+\begin{equation*}
+H_{t+1} = H_te^{r(1-H_t/K)}e^{-aP_t}
+\end{equation*}
+```
+```{=tex}
+\begin{equation*}
+P_{t+1} = cH_t(1-e^{-aP_t})
+\end{equation*}
+```
+$H$: population size of the host
+
+$P$: population size of the parasitoid
+
+$r$: reproductive rate of the host
+
+$K$: carrying capacity of the host
+
+$a$: attack rate of the parasitoid
+
+$c$: average number of viable eggs the parasitoid lays in a host
+
+Assumptions of the model include 1 - the parasitoid finds hosts randomly and 2 - the hosts and parasitoids are randomly distributed across a landscape. $e^{r(1-H_t/K)}$ is the rate of population growth for the host in a density dependent context and $e^{-aP_t}$ is the probability that the host will survive. $\therefore$ $(1-e^{-aP_t})$ is the probability that the parasitoid survives.

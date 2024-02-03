@@ -1,0 +1,395 @@
+\documentclass[11pt, a4paper]{article}
+%\usepackage{geometry}
+\usepackage[inner=1.5cm,outer=1.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+\pagestyle{empty}
+\usepackage{graphicx}
+\usepackage{fancyhdr, lastpage, bbding, pmboxdraw}
+\usepackage[usenames,dvipsnames]{color}
+\definecolor{darkblue}{rgb}{0,0,.6}
+\definecolor{darkred}{rgb}{.7,0,0}
+\definecolor{darkgreen}{rgb}{0,.6,0}
+\definecolor{red}{rgb}{.98,0,0}
+\usepackage[colorlinks,pagebackref,pdfusetitle,urlcolor=darkblue,citecolor=darkblue,linkcolor=darkred,bookmarksnumbered,plainpages=false]{hyperref}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\pagestyle{fancyplain}
+\fancyhf{}
+\lhead{ \fancyplain{}{NRES 779, Spring 2024} }
+%\chead{ \fancyplain{}{} }
+\rhead{ \fancyplain{}{\today} }
+%\rfoot{\fancyplain{}{page \thepage\ of \pageref{LastPage}}}
+\fancyfoot[RO, LE] {page \thepage\ of \pageref{LastPage} }
+\thispagestyle{plain}
+
+%%%%%%%%%%%% LISTING %%%
+\usepackage{listings}
+\usepackage{caption}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+\usepackage{verbatim} % used to display code
+\usepackage{fancyvrb}
+\usepackage{acronym}
+\usepackage{amsthm}
+\VerbatimFootnotes % Required, otherwise verbatim does not work in footnotes!
+
+
+
+\definecolor{OliveGreen}{cmyk}{0.64,0,0.95,0.40}
+\definecolor{CadetBlue}{cmyk}{0.62,0.57,0.23,0}
+\definecolor{lightlightgray}{gray}{0.93}
+
+
+
+\lstset{
+%language=bash,                          % Code langugage
+basicstyle=\ttfamily,                   % Code font, Examples: \footnotesize, \ttfamily
+keywordstyle=\color{OliveGreen},        % Keywords font ('*' = uppercase)
+commentstyle=\color{gray},              % Comments font
+numbers=left,                           % Line nums position
+numberstyle=\tiny,                      % Line-numbers fonts
+stepnumber=1,                           % Step between two line-numbers
+numbersep=5pt,                          % How far are line-numbers from code
+backgroundcolor=\color{lightlightgray}, % Choose background color
+frame=none,                             % A frame around the code
+tabsize=2,                              % Default tab size
+captionpos=t,                           % Caption-position = bottom
+breaklines=true,                        % Automatic line breaking?
+breakatwhitespace=false,                % Automatic breaks only at whitespace?
+showspaces=false,                       % Dont make spaces visible
+showtabs=false,                         % Dont make tabls visible
+columns=flexible,                       % Column format
+morekeywords={__global__, __device__},  % CUDA specific keywords
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\begin{center} {\Large \textsc{Bayesian Hierarchical Modeling in
+      Natural Resources (NRES 779)}}
+\end{center}
+\begin{center}
+  Spring 2024
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Course Information}
+\subsection*{Meeting Times}
+\textbf{Class} (3 credits): Wednesday and  Friday 9-9:50 (Orvis Building OB202), \\
+\textbf{Labs:} Friday 10:00-12:00 (Fleischmann Ag FA234)
+
+%%%
+
+\subsection*{Instructor Information:}
+\textbf{Instructor:} Perry Williams, Ph.D. \\
+\textbf{Office:} FA240\\
+\textbf{Email:} perryw@unr.edu\\
+\textbf{Website:} www.perrywilliams.us \\
+\textbf{Student/Instructor Communication} Email (I do not check messages on WebCampus) \\
+\textbf{Office Hours:} After class or by appointment
+
+%%%
+
+\subsection*{Course Description:}
+Virtually all progress is science requires using models to gain
+insight from data. This course will focus on gaining insight of
+scientific processes using statistics, mathematics, and
+observation. We will first review necessary probability, statistics,
+and computing, and then focus on Bayesian model building and
+implementation. The review at the beginning is primarily meant to get
+everyone on the same page in terms of notation and to highlight the
+most important aspects of the prerequisites. The data used in
+applications will focus on ecological applications. However, many of
+the concepts and models are transferable to other areas of natural
+resources and environmental science, including evolution, and
+conservation biology. Example data sets will include: wildlife and
+plant surveys, presence-absence (occupancy) data,
+mark-recapture/re-sight data, GPS animal movement data, and physical
+and chemical process data. We will discuss spatial and temporal
+aspects of analysis, including models for spatial and temporal
+autocorrelation. We will strive to discuss methods that are generally
+applicable to all areas of natural resource and environmental
+science. Students should have access to their own computer and a
+working installation of R.
+
+\subsection*{Course prerequisites}
+\subsubsection*{Required prerequisites}
+\begin{itemize}
+\item Working knowledge of \texttt{R}
+\end{itemize}
+
+\subsubsection*{Suggested prerequisites}
+Although not necessary, students with a course in calculus, linear
+algebra (MATH 330), and one of the following
+courses
+\begin{itemize}
+\item STAT 429/629,
+\item STAT 461/661,
+\item NRES 746,
+\end{itemize}
+will get the most out of the course. None of these are absolute
+requirements; I will review key background concepts as part of the
+lectures. However, that said, if you don't have at least two of these
+background courses, you should be prepared to do some remedial work on
+your own.
+
+\subsection*{Required texts:}
+\begin{itemize}
+\item Hobbs, N. T. and M. B. Hooten, Bayesian models: A statistical primer
+for ecologists, Princeton University Press 2015.
+\end{itemize}
+
+\subsection*{Additional Reading Material:}
+\begin{itemize}
+\item Assigned periodically
+\end{itemize}
+
+
+\subsection*{Anticipated Topics}
+Week 01: 
+\begin{itemize}
+\item Introduction
+\item What sets Bayes apart
+\end{itemize}
+Week 02:
+\begin{itemize}
+\item Deterministic models
+\end{itemize}
+Week 03:
+\begin{itemize}
+\item Rules of probability
+\end{itemize}
+Week 04:
+\begin{itemize}
+\item Probability distributions and moment matching
+\end{itemize}
+Week 05:
+\begin{itemize}
+\item Likelihood
+\end{itemize}
+Week 06:
+\begin{itemize}
+\item Bayes' theorem
+\end{itemize}
+Week 07:
+\begin{itemize}
+\item Priors
+\end{itemize}
+Week 08:
+\begin{itemize}
+\item MCMC I
+\end{itemize}
+Week 09:
+\begin{itemize}
+\item MCMC II
+\end{itemize}
+Week 10:
+\begin{itemize}
+\item Bayesian regression
+\end{itemize}
+Week 11:
+\begin{itemize}
+\item Bayesian analysis of designed experiments
+\end{itemize}
+Week 12:
+\begin{itemize}
+\item Bayesian hierarchical models
+\end{itemize}
+Week 13:
+\begin{itemize}
+\item Bayesian model checking
+\end{itemize}
+Week 14:
+\begin{itemize}
+\item Bayesian model selection
+\end{itemize}
+If Time Permits:
+\begin{itemize}
+\item Bayesian hierarchical mixture models
+\end{itemize}
+If Time Permits:
+\begin{itemize}
+\item Bayesian spatial models
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Student learning outcomes:}
+\textbf{Students will be able to:}
+\begin{enumerate}
+\item Learn the basic principles of probability and statistical
+  distributions needed to link deterministic models to data and apply these to a number of real data sets.
+\item Explain maximum likelihood methods for estimating parameters in
+  ecological models.
+\item Explain key principles of Bayesian statistics. Understand the
+  relationship between inference accomplished by maximum likelihood
+  and by applying Bayes’ theorem.
+\item Diagram, write, and implement hierarchical models
+  appropriate for diverse problems in ecological and natural resource science.
+\item Explain how Markov chain Monte Carlo (MCMC) methods can be used
+  to approximate marginal posterior distributions. Write MCMC
+  algorithms and computer code in \texttt{R} implementing MCMC methods
+  for simple Bayesian models.
+\item Use software for implementing MCMC methods (i.e., JAGS, R
+  packages) to approximate marginal posterior distributions of
+  parameters, latent variables, and derived quantities of interest. Be
+  able to evaluate convergence.
+\item Apply procedures for model checking and model selection in
+  the Bayesian framework.
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Course requirements}
+\noindent \textbf{REGULAR ATTENDANCE IS ESSENTIAL AND EXPECTED}! 
+
+%%%
+
+\subsection*{Grading criteria, scale, and standards}
+
+\noindent Grades will be based on an occasional quiz as well as a
+sequence of approximately 8-12 labs that may involve
+short-answer, essay, mathematical derivations, computer programming,
+data analysis, and paper summary/discussion.
+
+\begin{itemize}
+\item Reports must be prepared using some form of \TeX language.
+\item Reports will be prepared by rotating pair groups.
+\item By the end of the day that reports are due, each group member
+  must email me a brief description of their collaborator's strengths
+  (why this person is a good collaborator). These reports will be
+  compiled and used to determine a collaborator-score that will
+  account for 20\% of the course grade. These emails will be kept
+  anonymous.
+\item The \texttt{R} software will be used for all statistical
+  analysis and code/functions should be attached to the report as an
+  appendix.
+\end{itemize}
+
+\subsection*{Grading Policy:} Homework and quizzes (80\%),
+participation and group collaboration (20\%).
+
+\begin{center}
+  \begin{tabular}{ lllll }
+    89.5\% & $<$ & A  &      &\\ 
+    87\%   & $<$ & B+ &$\leq$& 89.5\%\\ 
+    79.5\% & $<$ & B  &$\leq$& 87\%\\ 
+    77\%   & $<$ & C+ &$\leq$& 79.5\%\\ 
+    69.5\% & $<$ & C  &$\leq$& 77\%\\ 
+    67\%   & $<$ & D+ &$\leq$& 69.5\%\\ 
+    59.5\% & $<$ & D  &$\leq$& 67\%\\
+           &     & F  &$\leq$& 57\%\\
+  \end{tabular}
+\end{center}
+
+\subsection*{Late  Work Policy:}
+Prior consent for rare circumstances or 20\% per day, up to 4 days. 
+
+
+\section*{Approximate schedule of due dates of graded assignments}
+\begin{itemize}
+\item Lab 01 Due: 02/02
+\item Lab 02 Due: 02/09
+\item Lab 03 Due: 02/16
+\item Lab 04 Due: 02/23
+\item Lab 05 Due: 03/01
+\item Lab 06 Due: 03/08
+\item Lab 07 Due 03/15
+\item Lab 08 Due: 03/22
+\item Lab 09 Due 03/29
+\item Lab 10 Due 04/05
+\item Lab 11 Due 04/12
+\item Lab 12 Due 04/19
+\end{itemize}
+
+\section*{Classroom Civility}
+To create and preserve a classroom atmosphere that optimizes teaching and learning, all students share the responsibility of creating a positive learning environment. Students are expected to conduct themselves in a manner that does not disrupt teaching or learning, and they are expected to follow these standards:
+\begin{itemize}
+\item First and foremost, classroom discussion should be civilized, inclusive, and respectful to everyone! Disagreement is expected. Intolerance will not be permitted!
+\item You are expected to be on time. I intend to begin class promptly at the designated time, and you should be in your seat and ready to begin class at this time. Class ends at the designated time. Please refrain from packing up your belongings early. It is disruptive to me and, more importantly, to your fellow students.
+\item Classroom participation is a part of your grade in this course. You must attend class prepared to fully participate. 
+\item Classroom discussion is meant to allow us to hear a variety of viewpoints. This can only happen if we respect each other and our differences.
+\item Cell phones must be turned off during class, unless you have informed me ahead of time that you are expecting an emergency message.
+\item Students that engage in high-level distractions will be asked to leave class. 
+\end{itemize}
+
+
+\section*{University Policies}
+
+\subsection*{Statement on academic dishonesty:}
+The University Academic Standards Policy defines academic dishonesty,
+and mandates specific sanctions for violations. See the University
+Academic Standards policy: UAM 6,502.
+
+\subsection*{Statement on disability services:}
+Any student with a disability needing academic adjustments or
+accommodations is requested to speak with me or the Disability
+Resource Center (Pennington Achievement Center Suite 230) as soon as
+possible to arrange for appropriate accommodations.
+
+\textbf{This course may leverage 3rd party web/multimedia content, if
+  you experience any issues accessing this content, please notify your
+  instructor}
+
+\subsection*{Statement on audio and video recording:}
+\subsection*{Student-created Recordings}
+Surreptitious or covert video-taping of class or unauthorized audio recording of class is prohibited by law and by Board of Regents policy. This class may be videotaped, or audio recorded only with the written permission of the instructor. In order to accommodate students with disabilities, some students may have been given permission to record class lectures and discussions. Therefore, students should understand that their comments during class may be recorded.
+
+\subsection*{Instructor-created Recordings}
+Class sessions may be audio-visually recorded for students in the class to review and for enrolled students who are unable to attend live to view. Students who participate with their camera on or who use a profile image are consenting to have their video or image recorded. If you do not consent to have your profile or video image recorded, keep your camera off and do not use a profile image. Students who un-mute during class and participate orally are consenting to have their voices recorded. If you do not consent to have your voice recorded during class, keep your mute button activated and only communicate by using the ``chat'' feature, which allows you to type questions and comments live.
+
+\section*{Statement for Academic Success Services}
+Your student fees cover usage of the University Math Center [(775) 784-4433], University Tutoring Center [(775) 784-6801], and University Writing Center [(775) 784-6030]. These centers support your classroom learning; it is your responsibility to take advantage of their services.
+
+\section*{Statement on Maintaining a Safe Learning and Work Environment}
+The University of Nevada, Reno is committed to providing a safe learning and work environment for all. If you believe you have experienced discrimination, sexual harassment, sexual assault, domestic/dating violence, or stalking, whether on or off campus, or need information related to immigration concerns, please contact the University’s Equal Opportunity \& Title IX office at 775-784-1547. Resources and interim measures are available to assist you. For more information, please visit the Equal Opportunity and Title IX page.
+
+\section*{Statement on COVID-19 Policies}
+\subsection*{Face Coverings}
+Pursuant to Nevada law, NSHE employees, students and members of the public are not required to wear face coverings while inside NSHE buildings irrespective of vaccination status. However, students may elect to wear face coverings if they choose.
+
+\subsection*{Disinfecting Your Learning Space}
+Disinfecting supplies are provided for your convenience to disinfect your learning space. You may also use your own disinfecting supplies.
+
+\subsection*{Testing Positive for COVID-19 or Exhibiting COVID-19 Symptoms}
+Students testing positive for COVID-19 or exhibiting COVID-19 symptoms will not be allowed to attend in-person instructional activities and must leave the venue immediately. Students should contact the Student Health Center or their health care provider to receive care and information pertaining to the latest COVID-19 quarantine and self-isolation protocols. If you are required to quarantine or self-isolate, you must contact your instructor immediately to make instructional and learning arrangements.
+
+\subsection*{Accommodations for COVID-19 Quarantined Students}
+For students who are required to quarantine or self-isolate due to testing positive for COVID-19 or exhibiting COVID-19 symptoms, instructors must provide opportunities to make-up missed course work, including assignments, quizzes, or exams. In courses with mandatory attendance policies, instructors shall not penalize students for missing classes while quarantined.
+
+
+\section*{Additional Information}
+\subsection*{Methods for communication}
+In the event of class cancellation, new information on meeting times,
+or room changes, I will send an announcement using WebCampus. Please
+email me directly with questions/concerns (perryw@unr.edu). Although I
+send announcements to the class using WebCampus, I check my messages
+there much less frequently than my UNR email account.
+
+\subsection*{Additional detail about academic dishonesty}
+Presenting work that is not your own on exams will result in losing
+all points associated with the exam and the inability to make up those
+points.
+
+
+\subsection*{Equal opporunity and Title IX}
+The University of Nevada, Reno is committed to providing a safe learning and work environment for all. If you believe you have experienced discrimination, sexual harassment, sexual assault, domestic/dating violence, or stalking, whether on or off campus, or need information related to immigration concerns, please contact the University's Equal Opportunity \& Title IX office at 775-784-1547. Resources and interim measures are available to assist you. For more information, please visit: https://www.unr.edu/equal-opportunity-title-ix .
+
+
+\section*{Unique class procedures/ structures:}
+\subsection*{Working in groups:} You will be assigned a lab group
+with another colleague every week. A team approach to work in
+the laboratories allows you to teach each other as well as to learn
+from me. It will lighten the work load by allowing you to share
+tasks. It is more fun.
+
+\subsection*{EECB Diversity Statement}
+We, the EECB faculty and students of the University of Nevada, Reno, condemn all forms of discrimination and recognize that systemic bias is pervasive in academia. EECB fully supports the goals of Black Lives Matter, DiversifySTEM, QueerSTEM, DiversifyEEB, Black Ecologists Matter, and allied groups.
+
+We recognize that systemic anti-Blackness, racism, sexism, xenophobia, and transphobia have contributed substantially to a lack of diversity in EECB fields, and we support all individuals and organizations working towards correcting these injustices. We commit to holding ourselves accountable for recognizing and eliminating systemic discrimination within our unit with regards to race, ethnicity, national origins, immigration status, gender, gender identity, sexual orientation, age, ability, socioeconomic status, and religion. We commit ourselves to identifying and dismantling the barriers to accessibility and full participation in our disciplines because we recognize that the greatest scientific advancements will require the full scope of human creativity and experience. We commit to being an active participant and leader in the substantial review and renewal that is needed in education, research and academic policies related to student and faculty equity. Some solutions are within our immediate reach, while others require developing policies and practices that can only be implemented at higher administrative levels or in partnership with our surrounding community. We commit to the long-term work required to develop and implement these actions on our campus, in our local community, as well as our broader scientific societies.
+
+
+
+
+
+\end{document}
