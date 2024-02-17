@@ -1,0 +1,197 @@
+\documentclass{article}
+
+\usepackage{amstext}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{authblk}
+\usepackage{bm}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{epsfig}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{fontspec}
+\usepackage{gensymb}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{lineno}
+\usepackage{longtable}
+\usepackage{lscape}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{natbib}
+\usepackage{setspace}
+\usepackage{times}
+\usepackage{titlesec}
+\usepackage{verbatim}
+
+\renewcommand{\thesection}{\Roman{section}} 
+
+\setlength{\parskip}{\baselineskip}%
+\setlength{\parindent}{0pt}%
+\graphicspath{{./images/}}
+\title{NRES 701B: Bayesian Hierarchical Modeling in Natural Resources}
+\author{Lab 03: Likelihood}
+\date{02/14/2020}
+
+\begin{document}
+
+<<GlobalOptions,include=FALSE,echo=FALSE>>= 
+options(digits=2) 
+@
+\maketitle
+
+\section{Objective}
+To get the most out of this lab, you must think of the specific problems you confront here as examples from an infinite variety of analytical challenges that can be attacked using the same general approach:
+
+\begin{itemize}
+\item Think about how the data arise.
+\item Develop a mathematical model of the process that produces the data.
+\item Choose the appropriate likelihood function to tie the predictions of your process model to the data.
+\item Use maximum likelihood (in this exercise) or Bayesian methods (later) to learn about the parameters in your process model and associated uncertainties.
+\item In this exercise we will not attempt to distinguish among different sources of uncertainty, i.e., process variance, observation error, and random effects. These distinctions will be made soon enough, after we have developed a bit more statistical sophistication. Moreover, we are leaving the problem of model selection until later in the course.
+\end{itemize}
+
+\section{Problem}
+\citep{coates1999growth} studied the influence of light availability on growth increment of saplings of species of conifers in northwestern interior cedar-hemlock forests of British Columbia. They used the deterministic model,
+
+\begin{align}
+\mu_i & = \frac{\alpha(L_i-c)}{\frac{\alpha}{\gamma}+(L_i-c)}, \notag
+\end{align}
+
+where:
+
+$\mu_i$ = prediction of growth increment of the $i^{th}$ hemlock tree (cm/year)
+
+$\alpha$ = maximum growth rate (cm/year)
+
+$\gamma$ = slope of curve at low light (cm/year)
+
+$c$ = light index where growth = 0 (unitless)
+
+$L_i$ = measured index of light availability for the ith hemlock tree, i.e. the proportion of the hemisphere above canopy open to light $\times$ 100 (unitless).
+
+We will return to this model several times during the course.
+
+Assume that growth increment can be any real number. It can negative because moose can eat the tops of saplings. 
+
+\begin{enumerate}
+\item Write a model for the data.
+
+%%%
+%%% Getting Started
+%%%
+
+\section{Getting Started using Excel}
+Obtain maximum likelihood estimates (MLE’s) of the model parameters using Solver in Excel (wtf?!). There is a good reason for using Excel here. When you write code in \texttt{R}, it is easy to fail to understand exactly what is happening ``under the hood." The structure of a maximum likelihood analysis is much more transparent when you are forced to build a spreadsheet. You may be delighted to know that this is the last time you will do this in this course.
+
+Open the spreadsheet containing the light limitation data (\texttt{HemlockData.csv}). In the next section you will add the proper formulas to columns and cells on this sheet to demonstrate that you know how likelihood works. Your spreadsheet will look something like this before answering questions 1 – 9:
+
+ \begin{center}
+ \includegraphics[width=\linewidth]{excel1}
+ \end{center}
+ \section{Setting up the Spreadsheet}
+Let’s think about the columns and the rows. This is the benefit of this exercise, so please linger on this, discussing the layout of this spreadsheet with your partner.
+
+\begin{itemize}
+\item Columns A and B should be easy, these are the data.
+ 
+\item Column C contains the prediction of your model for each level of light. These predictions depend on the values for $\alpha$, $\gamma$, and $c$ contained in column I.
+ 
+\item Column D contain the squared difference between observations and predictions.
+
+\item Column E contains the the probability density of the data conditional on $\mu_i$, and $\sigma$, one value for each data point. The Excel formula for this is \texttt{=NORMDIST(B2,C2,I\$5,FALSE)}.
+ 
+\item Cells I2 – I4 contain the values for $\alpha$, $\gamma$, and $c$ that are used to form the predicted growth rate as a function of light level (column C). Cell I5 contains the value for $\sigma$. Right now these cells are set to either 1 or 2. You will replace these with better initial values before using the solver to find the maximum likelihood estimates (MLE) for each of these parameters.
+ 
+\item Make a scatterplot of the data and the model predictions, where the x-axis is light level and the y-axis is growth increment. Plot the observed growth increments in blue and the predicted growth increments in green. For the moment, the predicted growth increments should form a line of points along the x-axis.
+
+\end{itemize}
+
+Answer the following questions before proceeding.
+
+\item How could you use the data to help you find good initial conditions for model parameters?
+\item Adjust the values for $\alpha$, $\gamma$, and $c$ until you get predictions that look reasonable in your plot. How could we get a better initial value for $\sigma$?
+\item Write the mathematics (the full equation) that is implemented in the formula in column E.
+
+\begin{align}
+L(\mu_i,\sigma|y_i)&=\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(y_i-\mu_i)^2}{2\sigma^2}}
+\end{align}
+
+\item What is the reason for the argument ``FALSE” in the Excel formula in column E?
+
+\item What does the function return when that argument is “TRUE”?
+
+\item In column F we take the logs of the likelihoods, which are summed in cell K2. If we had not taken the logs and instead, worked directly with the likelihoods, what formula would we use in K2?
+
+\item What are some potential computational problems with using the individual likelihoods rather than the log likelihoods to estimate the total likelihood?
+
+\item This model violates a fundamental assumption of traditional regression analysis. What is that assumption? How might you fix the problem? (Hint: think about what we are assuming about the covariate, light availability.)
+
+\section{Using the Excel Solver}
+
+When you have your spreadsheet constructed, use Solver to find the maximum likelihood estimates of the parameters. Solver is a very sophisticated non-linear numerical optimizer that uses Newton’s method to find values of parameters of a function that maximize or minimize the output of the function.
+
+If you have never used Solver, the main dialog box looks something like this:
+
+\begin{center}
+ \includegraphics[width=.7\linewidth]{solver1}
+\end{center}
+
+Put the cell containing the sum of the log likelihoods in the Set Objective field. The cells containing the parameter values will go into the By Changing Variable Cells field. Most likely, you will be able to do the exercises without putting constraints on the parameter values if you give them reasonable starting values. However, constraining parameters to reasonable values (e.g., $\alpha$ must be positive and can’t be too large) will prevent numerical errors and speed execution time.
+
+\item How might you use the squared error column D to compute $\sigma$? Make this computation and compare with your maximum likelihood estimate of $\sigma$ obtained using Solver.
+
+\section{Using R to do the Same Thing}
+Check your results using the \texttt{nls} function in R, which does non-linear estimation for normally distributed data. Examine the assumption that the model residuals are normally distributed using \texttt{qqnorm}. To speed things along, I have given you the syntax, but for it to be useful to you, you must study it and experiment a bit. In particular, you must do a help on \texttt{nls} and look at its methods—summary, predict, coef, and residuals. The hemlock light and growth increment data are included on my website.
+
+<<>>=
+d=read.csv("HemlockData.csv")
+x=d$Light
+y=d$ObservedGrowthRate
+
+plot(x,y,
+     ylab="Growth Rate (cm/yr)", 
+     xlab = ("Light Availability"),
+     pch=16)
+
+
+model=nls(y~a*(x-c)/(a/s+x-c), trace = TRUE, 
+          start=c(a=50,s=2,c=8))
+summary(model)
+p=(coef(model))
+a.hat=p[1]
+s.hat=p[2]
+c.hat=p[3]
+yhat=predict(model)
+
+lines(x,yhat,col="red")
+
+@
+
+\section{Incorporating Prior Information in an MLE}
+
+Suppose that a previous study reported a mean value of $\alpha$ = 35 with a standard deviation of the mean = 4.25.You may use a normal distribution to represent the prior information on $\alpha$. 
+\item Write a model for the data that includes the prior information.
+
+Incorporate these prior data in your new MLE estimate of $\alpha$. Hint: create a likelihood function for the probability of the new value of $\alpha$ conditional on the previous value and its standard deviation.
+
+\item How do you combine likelihoods (or log likelihoods) to obtain a total likelihood?
+
+\item Describe what happens to the estimate of $\alpha$ relative to the one you obtained earlier. What is going on?
+
+\item What is the effect of increasing the prior standard deviation on the new estimate? What happens when it shrinks?
+
+\item There is a single log likelihood for the prior distribution but the sum of many for the data. This seems ``unfair.” Explain how the prior distribtion can overwhelm the data and vice versa.
+
+\end{enumerate}
+%%%
+%%% References
+%%%
+ 
+\bibliographystyle{ecology} 
+\bibliography{references}
+
+\end{document}
