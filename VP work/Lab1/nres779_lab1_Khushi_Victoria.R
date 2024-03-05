@@ -12,7 +12,7 @@ lambdas = seq(0.25, 4.0, by = 0.25)
 times = seq(2, 30, by = 1.0)
 
 # Initialize a matrix for storing results
-x = matrix(0.01, 16, 30)
+x = matrix(0.01, length(lambdas), 30)
 
 # Populate the matrix using logistic equation
 for (i in 1:length(lambdas)) {
@@ -20,12 +20,12 @@ for (i in 1:length(lambdas)) {
     x[i, t + 1] = lambdas[i] * x[i, t] * (1 - x[i, t])
   }
 }
-
 # Create a 4x4 grid of plots for each lambda
 par(mfrow = c(4, 4))
 z = as.character(lambdas)
 for (i in 1:length(lambdas)) {
   titlet = bquote(lambda == .(z[i]))
+  #main = expression(paste(lambda, "=", lambdas[i]))
   plot(1:30, x[i,], main = titlet, xlab = "Time (1-30)", ylab = expression(x[t]), type = "l")
 }
 
@@ -66,7 +66,7 @@ for (i in 1:50) {
 ## Initializing
 
 # Read data from CSV
-data <- read.csv("Documents/UNR/2024_SPRING/NRES779/Labs/RMNP elk time series.csv")
+data <- read.csv("../../Labs/RMNP elk time series.csv")
 Nobs = data$Population_size
 Nyear = data$Year
 Nerror = data$SE
@@ -78,7 +78,7 @@ N = 0
 SSEarray = array(0, dim = c(1, 4, length(Ninit) * length(Kcap) * length(rates)))
 
 ## Loops to go through different values of Ninit, Kcap, and Rate and finding SSE
-
+tok = Sys.time()
 for (n in 1:length(Ninit)) {
   for (k in 1:length(Kcap)) {
     for (r in 1:length(rates)) {
@@ -101,7 +101,8 @@ for (n in 1:length(Ninit)) {
     }
   }
 }
-
+tik = Sys.time()
+tik-tok
 # Find the index of the minimum SSE in the SSEarray
 min_SSE_index <- which.min(SSEarray[1, 4, ])
 min_SSE = SSEarray[1,, min_SSE_index, drop = FALSE]

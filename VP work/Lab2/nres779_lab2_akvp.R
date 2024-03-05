@@ -116,15 +116,16 @@ plot(ys, data, type = "l",
      main = "Probability distribution of 1-10 occupied patches of 50")
 
 ### 9.3.d
-
-data = pbinom(5,50,0.04, lower.tail = FALSE)
+## at least 5, means 4 or less
+data = pbinom(4,50,0.04, lower.tail = FALSE)
 data
 
 ### 9.3.e 
 
 ys = seq(1:50)
-data = pbinom(ys,50,0.04, lower.tail = FALSE)
+data = pbinom(ys,50,0.04, lower.tail = TRUE)
 plot(ys, data, type = "l",
+     xlim = c(0,10),
      xlab = "Minimum number of occupied patches",
      ylab  ="Probability")
 
@@ -158,7 +159,7 @@ set.seed(1234)
 par(mfrow = c(1,2))
 n = 100000
 mu = 100
-var = 400
+var = 400 
 disp = mu^2/(var-mu)
 phi = disp/(mu+disp)
 
