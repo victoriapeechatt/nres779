@@ -13,6 +13,8 @@ hist(y, breaks = 25)
 
 #### Draw mean function, using conjugate normal ####
 
+### mean full conditional distribution 
+
 draw.mean = function(y,mu.prior, var.prior, var.star){
   a = (mu.prior/var.prior) + (sum(y)/var.star)
   b = (1/var.prior)  + (length(y)/var.star)
@@ -24,6 +26,9 @@ draw.mean = function(y,mu.prior, var.prior, var.star){
 }
 
 #### Draw variance function, using conjugate gamma ####
+
+### variance full conditional distribution 
+
 draw.var = function(shape,rate,y,mu){
   alpha = shape + length(y)/2
   beta = rate + (sum((y-mu)^2)/2)
