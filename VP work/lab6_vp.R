@@ -280,7 +280,7 @@ for (i in 2:n.iter) {
                   alpha = x$alpha[1,i-1,1], gamma = x$gamma[1,i-1,1], 
                   c = x$c[1,i-1,1], sigma = new.sigma)
     
-    #Choose new c
+    #Choose new sigma
     x$sigma[1,i,1] = choose(x = x$sigma[1,i-1,1], 
                             z = new.sigma, 
                             Like_z = Like_z, 
@@ -289,7 +289,7 @@ for (i in 2:n.iter) {
                             tune = tune$sigma)
     
     #Derived quantities 
-    x$growth_ratio[1,i-1,1] = x$alpha[1,i-1,1]/x$sigma[1,i-1,1]
+    x$growth_ratio[1,i-1,1] = x$alpha[1,i-1,1]/x$gamma[1,i-1,1]
     
     x$y.hat[,i-1,1] = g(alpha = x$alpha[1,i-1,1], 
                                 gamma = x$gamma[1,i-1,1], 
